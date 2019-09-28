@@ -58,10 +58,9 @@ public class JDBCExample {
             System.out.println("-----------------------");
             
             
-            int suCodigoECI=20134423;
-            registrarNuevoProducto(con, suCodigoECI, "SU NOMBRE", 99999999);            
+            registrarNuevoProducto(con, 2149194, "The best product", 99999999);            
             con.commit();
-                        
+                      
             
             con.close();
                                    
@@ -83,7 +82,7 @@ public class JDBCExample {
     public static void registrarNuevoProducto(Connection con, int codigo, String nombre,int precio) throws SQLException{
         try {
             Statement s = con.createStatement();
-            String sql = "INSERT INTO ORD_PRODUCTOS(codigo,nombre,precio) VALUES("+Integer.toString(codigo)+","+nombre+","+Integer.toString(precio)+");";
+            String sql = "INSERT INTO ORD_PRODUCTOS(codigo,nombre,precio) VALUES("+Integer.toString(codigo)+",'"+nombre+"',"+Integer.toString(precio)+");";
             int rs = s.executeUpdate(sql);
         } catch (SQLException ex) {
             Logger.getLogger(JDBCExample.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,8 +125,9 @@ public class JDBCExample {
             Statement s = con.createStatement();
             String sql = "SELECT sum(precio*(SELECT cantidad FROM ORD_DETALLE_PEDIDO WHERE pedido_fk ="+Integer.toString(codigoPedido)+" && producto_fk = codigo)) "
                     + "FROM ORD_PRODUCTOS WHERE codigo IN (SELECT producto_fk FROM ORD_DETALLE_PEDIDO WHERE pedido_fk ="+Integer.toString(codigoPedido)+");";
+            System.out.println(sql);
             ResultSet rs = s.executeQuery (sql);
-            ans=rs.getInt(1);
+            if (rs.next())ans=rs.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(JDBCExample.class.getName()).log(Level.SEVERE, null, ex);
         }
