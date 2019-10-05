@@ -18,10 +18,12 @@ package edu.eci.cvds.samples.services.client;
 
 
 
-import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ClienteMapper;
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.*;
+import edu.eci.cvds.samples.entities.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
+import java.util.Date;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -64,20 +66,20 @@ public class MyBatisExample {
         SqlSession sqlss = sessionfact.openSession();
         ClienteMapper cm=sqlss.getMapper(ClienteMapper.class);
         //System.out.println(cm.consultarClientes());
-		System.out.println("-------------Aca va un solo cliente---------");
+        System.out.println("-------------Un solo cliente---------");
         System.out.println(cm.consultarCliente(5));
-       
-        
-        
-        
+        System.out.println("-------------Clientes---------");
+        System.out.println(cm.consultarClientes());
+        //cm.agregarItemRentadoACliente(5, 1, new Date(2019,6,11), new Date(2019,6,19));
+        ItemMapper im= sqlss.getMapper(ItemMapper.class);
+        TipoItem ti = new TipoItem(10,"Documental");
+        Item it = new Item(ti, 30, "nuevoDocumental", "Salud", new Date(2019,6,11),2019619, "formatoxD4_0", "Salud");
+        //im.insertarItem(it);
+        System.out.println("-------------Items---------");
+        System.out.println(im.consultarItems());
+        System.out.println("-------------Unsolo item---------");
+        System.out.println(im.consultarItem(1));
         sqlss.commit();
-        
-        
         sqlss.close();
-
-        
-        
     }
-
-
 }
